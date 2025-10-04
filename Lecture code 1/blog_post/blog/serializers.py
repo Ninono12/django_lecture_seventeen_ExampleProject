@@ -23,15 +23,16 @@ class BlogPostCreateSerializer(BlogPostListSerializer):
         return blog_post
 
 
-# class BlogPostCreateSerializer(serializers.ModelSerializer):
-#     image = serializers.ImageField(write_only=True)
-#
-#     class Meta:
-#         model = BlogPost
-#         fields = ['title', 'text', 'active', 'category', 'image']
-#
-#     def create(self, validated_data):
-#         image = validated_data.pop('image', None)
-#         blog_post = BlogPost.objects.create(**validated_data)
-#         BannerImage.objects.create(blog_post=blog_post, image=image)
-#         return blog_post
+class BlogPostCreateSerializer(serializers.ModelSerializer):
+    image = serializers.ImageField(write_only=True, required=False)
+
+    class Meta:
+        model = BlogPost
+        fields = ['title', 'text', 'active', 'category', 'image']
+
+    def create(self, validated_data):
+        image = validated_data.pop('image', None)
+        blog_post = BlogPost.objects.create(**validated_data)
+        if image:  # მხოლოდ მაშინ შექმნის BannerImage, თუ ფაილი არსებობს
+            BannerImage.objects.create(blog_post=blog_post, image=image)
+        return blog_post

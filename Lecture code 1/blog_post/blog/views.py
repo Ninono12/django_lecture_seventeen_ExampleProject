@@ -11,8 +11,9 @@ from blog.serializers import BlogPostCreateSerializer, BlogPostListSerializer
 def create_blog_post(request):
     serializer = BlogPostCreateSerializer(data=request.data)
     if serializer.is_valid():
-        return Response(serializer.validated_data)
-    return Response(serializer.errors, status=400)
+        blog_post = serializer.save()  # შექმნა
+        return Response(BlogPostCreateSerializer(blog_post).data, status=status.HTTP_201_CREATED)
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 @api_view(['GET', 'POST', 'PUT', 'DELETE'])
