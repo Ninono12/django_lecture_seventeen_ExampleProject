@@ -41,7 +41,6 @@ def blog_post_list_detail_update(request, id=None):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-
     elif request.method == 'DELETE':
         if not id:
             return Response({"detail": "ID is required for deletion."}, status=status.HTTP_400_BAD_REQUEST)

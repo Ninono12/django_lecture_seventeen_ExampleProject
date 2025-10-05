@@ -11,6 +11,7 @@ urlpatterns = [
     path('blog_post_list_create_class/', BlogPostListCreateView.as_view(), name='blog_post_list_create_class'),
     path('blogposts/<int:id>/', BlogPostDetailUpdateDeleteView.as_view(), name='blogposts_detail'),
     path('blog_post_detail_update/<int:id>/', blog_post_list_detail_update, name='blog_post_detail_update'),
+    path('blog_post_detail_update_class/<int:id>/', BlogPostDetailUpdateDeleteView.as_view(), name='blog_post_detail_update_class')
 ]
 
 
