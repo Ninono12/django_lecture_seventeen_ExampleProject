@@ -17,7 +17,7 @@ def create_blog_post(request):
 
 
 @api_view(['GET', 'POST', 'PUT', 'DELETE'])
-def blog_post_list_create(request):
+def blog_post_list_detail_update(request):
     if request.method == 'GET':
         blogs = BlogPost.objects.filter(deleted=False)
         serializer = BlogPostListSerializer(blogs, many=True)
@@ -40,6 +40,13 @@ def blog_post_list_create(request):
             return Response(serializer.validated_data, status=status.HTTP_200_OK)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+    elif request.method == 'DELETE':
+        book = BlogPost.objects.filter(id=id).first
+        if not book:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+        book.deleted = True
+        book.save()
+        return Response(status=status.HTTP_204_NO_CONTENT)
 
 class BlogPostListCreateView(APIView):
     def get(self, request):
